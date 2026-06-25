@@ -1,0 +1,13 @@
+name: Scheduled Health Check
+
+on: 
+ schedule:
+   - cron: '0 */6 * * *'
+
+jobs:
+  health-check:
+   runs-on: ubuntu-latest
+
+   steps:
+     - name: Server Check
+       run: echo "Checking application health"
