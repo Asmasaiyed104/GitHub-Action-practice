@@ -1,0 +1,80 @@
+# Workflow Name
+# This name will appear in the GitHub Actions tab
+name: Auto Linter
+
+
+# Trigger Section
+# This workflow will run automatically whenever
+# a Python (.py) file is pushed to the repository
+on:
+  push:
+    paths:
+      - "*.py"
+
+
+# Jobs Section
+# jobs contain all the tasks GitHub Actions should perform
+jobs:
+
+  # Job Name
+  # This job checks Python code quality using Flake8
+  lint:
+
+    # Runner Machine
+    # GitHub creates a temporary Ubuntu virtual machine
+    # to execute all workflow steps
+    runs-on: ubuntu-latest
+
+    # Steps Section
+    # Steps run one by one in sequence
+    steps:
+
+      # Step 1
+      # Checkout action downloads/clones repository code
+      # into the temporary runner machine
+      - name: Checkout Repository Code
+        uses: actions/checkout@v4
+
+
+      # Step 2
+      # Install Python inside the Ubuntu runner
+      # We are using Python version 3.12
+      - name: Setup Python Environment
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+
+      # Step 3
+      # Verify Python installation
+      # This command prints installed Python version
+      - name: Check Python Version
+        run: python --version
+
+
+      # Step 4
+      # Install Flake8 package
+      # Flake8 is a Python linter tool
+      # It checks formatting, syntax, spacing, and code quality
+      - name: Install Flake8
+        run: pip install flake8
+
+
+      # Step 5
+      # List repository files inside the runner machine
+      # Useful for debugging and understanding workflow execution
+      - name: List Repository Files
+        run: ls -la
+
+
+      # Step 6
+      # Run Flake8 on all Python files
+      # "." means current repository directory
+      - name: Run Python Linter
+        run: flake8 .
+
+
+      # Step 7
+      # Print success message if all previous steps pass successfully
+      - name: Workflow Completed
+        run: echo "Lint workflow completed successfully"
