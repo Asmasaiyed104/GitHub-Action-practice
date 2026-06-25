@@ -1,0 +1,12 @@
+name: DevOps Motivation
+
+on: 
+ workflow_dispatch:
+
+jobs:
+  motivation:
+   runs-on: ubuntu-latest
+
+   steps:
+     - name: Motivation Message
+       run: echo "Future DevOps Engineer Loading"
