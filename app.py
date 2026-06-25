@@ -1,71 +1,35 @@
-# Asma DevOps Practice App
-# This file is for GitHub Actions Python linter practice.
+name: Auto Linter
 
-APP_NAME = "Asma DevOps App"
-AUTHOR = "Asma Saiyed"
-ROLE = "DevOps Engineer"
+on:
+  push:
+    paths:
+      - "**.py"
+  workflow_dispatch:
 
+jobs:
+  lint:
+    runs-on: ubuntu-latest
 
-def print_header():
-    print("=" * 40)
-    print(APP_NAME)
-    print("Created by:", AUTHOR)
-    print("Learning role:", ROLE)
-    print("=" * 40)
+    steps:
+      - name: Checkout Repository Code
+        uses: actions/checkout@v4
 
+      - name: Setup Python Environment
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
 
-def show_learning_topics():
-    topics = [
-        "Linux",
-        "Git and GitHub",
-        "GitHub Actions",
-        "Docker",
-        "CI/CD Pipeline",
-        "AWS EC2",
-        "PostgreSQL",
-        "Kubernetes",
-    ]
+      - name: Check Python Version
+        run: python --version
 
-    print("\nToday I am learning:")
-    for topic in topics:
-        print("-", topic)
+      - name: Install Flake8
+        run: pip install flake8
 
+      - name: List Repository Files
+        run: ls -la
 
-def calculate_progress(completed_days, total_days):
-    progress = (completed_days / total_days) * 100
-    return progress
+      - name: Run Python Linter
+        run: flake8 .
 
-
-def show_pipeline_steps():
-    steps = [
-        "Clone the code",
-        "Install dependencies",
-        "Run tests",
-        "Build Docker image",
-        "Push image to registry",
-        "Deploy application",
-    ]
-
-    print("\nBasic CI/CD pipeline steps:")
-    for number, step in enumerate(steps, start=1):
-        print(f"{number}. {step}")
-
-
-def main():
-    print_header()
-    show_learning_topics()
-
-    completed_days = 37
-    total_days = 90
-    progress = calculate_progress(completed_days, total_days)
-
-    print(f"\n90DaysOfDevOps progress: {progress:.2f}%")
-
-    show_pipeline_steps()
-
-    print("\nWorkflow is running successfully.")
-    print("Keep going, Asma. You are doing great!")
-
-
-if __name__ == "__main__":
-    main()
+      - name: Workflow Completed
+        run: echo "Lint workflow completed successfully"
